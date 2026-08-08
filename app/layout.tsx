@@ -23,7 +23,7 @@ const sourceSerif = Source_Serif_4({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jay-site.vercel.app"),
+  metadataBase: new URL("https://jay-site-a085kvd2r-umojah.vercel.app"),
   title: {
     default: "Jay Shah — Finance | Data | AI",
     template: "%s — Jay Shah",
