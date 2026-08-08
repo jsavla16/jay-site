@@ -22,8 +22,16 @@ const sourceSerif = Source_Serif_4({
   variable: "--font-source-serif",
 });
 
+// Resolved at build time rather than hardcoded: Vercel mints a new hostname
+// for every deployment, so a pasted URL goes stale on the next push.
+// VERCEL_PROJECT_PRODUCTION_URL is the stable production alias, and picks up a
+// custom domain automatically once one is attached.
+const siteUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+  : "http://localhost:3000";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://jay-site-a085kvd2r-umojah.vercel.app"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Jay Shah — Finance | Data | AI",
     template: "%s — Jay Shah",
