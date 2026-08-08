@@ -30,3 +30,27 @@ deploy time.
 > produce something installable — it just can't confirm it installs.
 
 ---
+
+## A CVE in the very first dependency
+
+**What happened.** Vercel's build output flagged `next-mdx-remote@5.0.0`
+as vulnerable, right on the first deploy.
+
+**What it actually was.** CVE-2026-0969, CVSS 8.8. `serialize`/`compileMDX`
+in versions 4.3.0 up to 6.0.0 don't sanitize JS expressions inside `{}` in
+MDX content — `eval()`, `Function()`, `require()` — so untrusted MDX can
+run arbitrary code server-side. This site's MDX is all self-authored, not
+user-submitted, so the actual exposure here was low. Ran the version
+anyway because it was the current release when the scaffold was written,
+not because anyone checked its security history.
+
+**The fix.** Bumped to `^6.0.0`, which sets `blockJS: true` by default —
+JS expressions in MDX are now off unless explicitly re-enabled. No code
+changes needed: this project's `<MDXRemote source={...} />` usage in
+`next-mdx-remote/rsc` never used the `scope` or `lazy` props that 6.0.0
+removed.
+
+> "Latest" isn't the same as "checked." Worth a quick vulnerability search
+> before pinning any new dependency, not just after Vercel flags it.
+
+---
