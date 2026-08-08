@@ -54,3 +54,59 @@ removed.
 > before pinning any new dependency, not just after Vercel flags it.
 
 ---
+
+## The transparent logo that wasn't
+
+**What happened.** Handed over an SVG of the JS monogram, described as
+having a clear background, to be placed over the site's dark gradient.
+
+**What it actually was.** Two things, neither visible from the filename.
+The file was 1MB — because it isn't vector at all. It's a single 1254px
+PNG base64-encoded inside an `<svg>` wrapper: `<image xlink:href="data:
+image/png;base64,...">`, one element, no paths. And that PNG is mode
+`RGB`, not `RGBA` — no alpha channel. The "clear" background was a solid
+near-black square, `(1,1,1)`, invisible against a black artboard and
+against nothing else.
+
+**How it was caught.** Not by looking at it — it looks correct on any dark
+background, which is exactly where it was being reviewed. By opening it:
+`Image.open(f).mode` returns `RGB`, and there is no alpha to inspect.
+
+**The fix.** Rebuilt the alpha channel from luminance. The mark is pure
+white on near-black, so the greyscale value at each pixel *is* the coverage
+value: set every pixel to white and use the original luminance as the alpha
+channel. Antialiased edges survive intact, and the mark now composites onto
+any background. Generated from the 4000px source, cropped to content
+(`rows 889–2760` for the hexagon, `2875–2981` for the tagline, found by
+scanning for empty rows) into `mark.png`, `icon.png`, `og.png`, `favicon.ico`.
+
+> A logo on a dark background and a logo with no background look identical
+> until the day the background changes. Check the mode, not the render.
+
+**Footnote.** The OG image's "Jay Shah" is set in Poppins, not Space
+Grotesk — the sandbox has no network access to fetch webfonts, so the
+nearest installed geometric sans stood in. It's baked into a static PNG, so
+it will stay slightly off-brand until regenerated somewhere with the real
+font.
+
+---
+
+## Two folders that nearly became the repo
+
+**What happened.** `git status` before committing the redesign listed
+`wordmark examples/` and `umojah-website-blog/` as untracked — 7.9MB of
+raster logo exports and the reference notes from the Umojah build, sitting
+inside the project folder because that's where they were convenient.
+
+**Why it mattered.** `git add -A` would have taken all of it. Not fatal,
+but the deployed site needs four small files from that 7.9MB, and git
+history is permanent — removing large files later means rewriting history,
+not deleting them.
+
+**The fix.** Both added to `.gitignore` with a comment saying why, so the
+next person (me, in three months) doesn't "tidy up" by un-ignoring them.
+
+> Working material and shipped material end up in the same folder because
+> that's convenient. `.gitignore` is where that distinction gets recorded.
+
+---

@@ -1,27 +1,29 @@
-import Link from "next/link";
+import PostCard from "@/components/PostCard";
 import { getSortedPosts } from "@/lib/posts";
 
 export const metadata = {
-  title: "Blog — Jay Shah",
+  title: "Blog",
+  description: "Build notes and write-ups from Jay Shah.",
 };
 
 export default function BlogIndex() {
   const posts = getSortedPosts();
 
   return (
-    <div className="space-y-8">
-      <h1 className="text-2xl font-bold">Blog</h1>
-      <ul className="space-y-6">
+    <div>
+      <p className="meta">{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
+      <h1 className="mt-4 font-sans text-4xl font-medium tracking-tight text-bone">
+        Blog
+      </h1>
+      <p className="mt-4 max-w-prose font-serif text-lg leading-relaxed text-bone/85">
+        Notes written when something breaks and gets fixed, expanded into posts.
+      </p>
+
+      <div className="mt-10 grid gap-4">
         {posts.map((post) => (
-          <li key={post.slug}>
-            <Link href={`/blog/${post.slug}`} className="text-lg font-medium underline">
-              {post.title}
-            </Link>
-            <p className="text-sm text-neutral-500">{post.date}</p>
-            <p className="text-neutral-700">{post.excerpt}</p>
-          </li>
+          <PostCard key={post.slug} post={post} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

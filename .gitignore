@@ -26,3 +26,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# local working material, not part of the deployed site
+# (design source files — 7.9MB of raster exports; web-ready assets live in /public)
+/wordmark examples/
+# (raw notes + reference components from the Umojah build, kept for blog drafting)
+/umojah-website-blog/

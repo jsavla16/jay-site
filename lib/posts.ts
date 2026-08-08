@@ -3,6 +3,8 @@ export type PostMeta = {
   title: string;
   date: string; // YYYY-MM-DD
   excerpt: string;
+  readTime?: string;
+  tags?: string[];
 };
 
 // Metadata lives here; body content lives in /content/posts/<slug>.mdx
@@ -13,6 +15,8 @@ export const posts: PostMeta[] = [
     date: "2026-08-07",
     excerpt:
       "Why this site exists, and the plan to turn raw build notes into posts.",
+    readTime: "2 min",
+    tags: ["Meta"],
   },
 ];
 

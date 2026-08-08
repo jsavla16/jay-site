@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* The canvas gradient lives on a fixed pseudo-element rather than on body.
+     background-attachment: fixed is unreliable on iOS Safari, and letting the
+     gradient scroll with a long post makes the diagonal visibly restart. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #0a0a0c 0%, #0a0a0c 25%, #1c1c22 100%);
+  }
+
+  ::selection {
+    background: rgba(94, 200, 186, 0.25);
+    color: #edebe4;
+  }
+
+  :focus-visible {
+    outline: 2px solid #5ec8ba;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Shared glass surface for post cards and tool cards. Elevation comes from
+     the hairline border, not a drop shadow — shadows read muddy on dark. */
+  .card {
+    @apply rounded-card border border-hairline bg-surface transition-all duration-200;
+  }
+  .card-interactive {
+    @apply card hover:border-accent-soft hover:bg-surface-hover hover:shadow-accent-glow;
+  }
+
+  /* Monospace meta row: date · read time · category */
+  .meta {
+    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-bone/60;
+  }
+
+  .tag-pill {
+    @apply inline-block rounded border border-accent-faint px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.12em] text-accent;
+  }
+}
