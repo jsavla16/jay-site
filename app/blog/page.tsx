@@ -6,6 +6,10 @@ export const metadata = {
   description: "Build notes and write-ups from Jay Shah.",
 };
 
+// Scheduled posts go live on their date without needing a manual redeploy.
+// Without this the page is built once and a future-dated post never appears.
+export const revalidate = 3600;
+
 export default function BlogIndex() {
   const posts = getSortedPosts();
 

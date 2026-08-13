@@ -110,3 +110,31 @@ next person (me, in three months) doesn't "tidy up" by un-ignoring them.
 > that's convenient. `.gitignore` is where that distinction gets recorded.
 
 ---
+
+## The post that would have never published itself
+
+**What happened.** Two Umojah posts went in, the second dated a week ahead
+so the series keeps a weekly cadence. Filtering it out of the index was one
+line. Getting it to appear on its own date was not.
+
+**What it actually was.** `getSortedPosts()` calls `new Date()`, which
+reads the clock *at build time*, not at request time. The blog index is a
+static page: Next evaluates it once during `next build`, writes the HTML,
+and serves that file until something triggers a rebuild. Nothing was going
+to trigger one. The date filter would have been frozen at whatever
+"today" meant on the day of the deploy, and the scheduled post would have
+stayed hidden indefinitely — no error, no failed build, just a post that
+silently never arrived.
+
+**The fix.** `export const revalidate = 3600` on the homepage and the blog
+index. The pages regenerate at most hourly, so the post surfaces within an
+hour of its date without anyone pushing anything.
+
+> A static site has no clock. Any logic comparing against "now" runs once,
+> at build, and then stops being true.
+
+**Related decision.** The scheduled post's own URL stays reachable before
+its date — it's simply unlinked. Useful for previewing and for sending it
+to someone early. Only the listings hide it.
+
+---

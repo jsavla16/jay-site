@@ -2,6 +2,9 @@ import Link from "next/link";
 import PostCard from "@/components/PostCard";
 import { getSortedPosts } from "@/lib/posts";
 
+// Matches the blog index: lets a scheduled post surface here on its date.
+export const revalidate = 3600;
+
 export default function Home() {
   const recent = getSortedPosts().slice(0, 3);
 

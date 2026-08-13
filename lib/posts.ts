@@ -1,7 +1,7 @@
 export type PostMeta = {
   slug: string;
   title: string;
-  date: string; // YYYY-MM-DD
+  date: string; // YYYY-MM-DD — a future date keeps the post unpublished
   excerpt: string;
   readTime?: string;
   tags?: string[];
@@ -10,20 +10,40 @@ export type PostMeta = {
 // Metadata lives here; body content lives in /content/posts/<slug>.mdx
 export const posts: PostMeta[] = [
   {
-    slug: "welcome",
-    title: "Starting the build log",
-    date: "2026-08-07",
+    slug: "umojah-how-we-got-here",
+    title: "Umojah: How We Got Here",
+    date: "2026-08-13",
     excerpt:
-      "Why this site exists, and the plan to turn raw build notes into posts.",
-    readTime: "2 min",
-    tags: ["Meta"],
+      "A beach in Goa, a friend who spent the 2000s as a system engineer in Nottingham, and ten years of building bass bins by hand — and why, in 2026, a sound system needed a website.",
+    readTime: "6 min",
+    tags: ["Building Umojah"],
+  },
+  {
+    slug: "choosing-a-stack",
+    title: "Choosing a Stack When You're Not a Developer",
+    date: "2026-08-20",
+    excerpt:
+      "Canva got the look right and never actually broke. What it couldn't do was carry a hire business, a record label, and a growing event archive — so the decision became which code to pick up instead.",
+    readTime: "7 min",
+    tags: ["Building Umojah", "Stack"],
   },
 ];
+
+function isPublished(post: PostMeta, now: Date): boolean {
+  // Compare date-only strings so a post goes live at the start of its date
+  // in whatever timezone the build runs in, rather than 00:00 UTC.
+  const today = now.toISOString().slice(0, 10);
+  return post.date <= today;
+}
 
 export function getPostMeta(slug: string): PostMeta | undefined {
   return posts.find((p) => p.slug === slug);
 }
 
+/** Published posts only, newest first. Scheduled posts are hidden. */
 export function getSortedPosts(): PostMeta[] {
-  return [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
+  const now = new Date();
+  return posts
+    .filter((p) => isPublished(p, now))
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
