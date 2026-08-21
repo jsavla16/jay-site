@@ -27,6 +27,15 @@ export const posts: PostMeta[] = [
     readTime: "7 min",
     tags: ["Building Umojah", "Stack"],
   },
+  {
+    slug: "design-handoff",
+    title: "Design Handoff: Turning a Canva Artboard Into Code",
+    date: "2026-08-28",
+    excerpt:
+      "A medallion's beaded tassels, about to spill into the next section, forced a fraction system called --stage into existence: every length on the site measured off one shared value, pulled straight from the Canva artboard itself.",
+    readTime: "6 min",
+    tags: ["Building Umojah", "Design"],
+  },
 ];
 
 function isPublished(post: PostMeta, now: Date): boolean {
