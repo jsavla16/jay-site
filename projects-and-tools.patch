@@ -1,0 +1,595 @@
+diff --git a/app/finance-tools/page.tsx b/app/finance-tools/page.tsx
+deleted file mode 100644
+index 61cd4d7..0000000
+--- a/app/finance-tools/page.tsx
++++ /dev/null
+@@ -1,41 +0,0 @@
+-import ToolsIndex from "@/components/ToolsIndex";
+-import type { Tool } from "@/components/ToolCard";
+-
+-export const metadata = {
+-  title: "Finance Tools",
+-  description: "Calculators and models for finance and real estate work.",
+-};
+-
+-// Placeholder set — replace as each tool gets built. Cards without an href
+-// render as "Planned" rather than dead links.
+-const tools: Tool[] = [
+-  {
+-    name: "Mortgage & amortisation",
+-    category: "Calculator",
+-    description:
+-      "Repayment schedule with rate, term, and lump-sum overpayment inputs.",
+-  },
+-  {
+-    name: "Property yield",
+-    category: "Real estate",
+-    description:
+-      "Gross and net rental yield, with service charge and void assumptions.",
+-  },
+-  {
+-    name: "DCF valuation",
+-    category: "Model",
+-    description:
+-      "Discounted cash flow with adjustable WACC and terminal growth.",
+-  },
+-];
+-
+-export default function FinanceTools() {
+-  return (
+-    <ToolsIndex
+-      eyebrow="Finance"
+-      title="Finance Tools"
+-      intro="Calculators and small models from finance and real estate work — the ones worth building once rather than rebuilding in a spreadsheet each time."
+-      tools={tools}
+-    />
+-  );
+-}
+diff --git a/app/marketing-tools/page.tsx b/app/marketing-tools/page.tsx
+deleted file mode 100644
+index 31ab4c8..0000000
+--- a/app/marketing-tools/page.tsx
++++ /dev/null
+@@ -1,39 +0,0 @@
+-import ToolsIndex from "@/components/ToolsIndex";
+-import type { Tool } from "@/components/ToolCard";
+-
+-export const metadata = {
+-  title: "Marketing Tools",
+-  description: "Copy, campaign, and design utilities for sales and marketing.",
+-};
+-
+-const tools: Tool[] = [
+-  {
+-    name: "Listing copy generator",
+-    category: "Real estate",
+-    description:
+-      "Property details in, structured listing copy out — headline, body, and highlights.",
+-  },
+-  {
+-    name: "UTM builder",
+-    category: "Campaigns",
+-    description:
+-      "Consistent campaign URLs with a saved naming convention, so reporting stays clean.",
+-  },
+-  {
+-    name: "Social post sizer",
+-    category: "Design",
+-    description:
+-      "Current dimensions and safe areas per platform, for laying out artwork in Canva.",
+-  },
+-];
+-
+-export default function MarketingTools() {
+-  return (
+-    <ToolsIndex
+-      eyebrow="Sales & Marketing"
+-      title="Marketing Tools"
+-      intro="Utilities from real estate sales and design work — the repetitive parts of running campaigns and producing collateral."
+-      tools={tools}
+-    />
+-  );
+-}
+diff --git a/app/projects/page.tsx b/app/projects/page.tsx
+new file mode 100644
+index 0000000..b1a5cdd
+--- /dev/null
++++ b/app/projects/page.tsx
+@@ -0,0 +1,33 @@
++import ProjectCard from "@/components/ProjectCard";
++import { projects } from "@/lib/projects";
++
++export const metadata = {
++  title: "Projects",
++  description:
++    "Things built and shipped — what each one is, who uses it, and the problem that took longest to find.",
++};
++
++export default function Projects() {
++  return (
++    <div>
++      <p className="meta">Built &amp; shipped</p>
++      <h1 className="mt-4 font-sans text-4xl font-medium tracking-tight text-bone">
++        Projects
++      </h1>
++      <p className="mt-4 max-w-prose font-serif text-lg leading-relaxed text-bone/85">
++        Things that exist, rather than things I know about. Each one gets the
++        same four questions: what it is, who uses it, what it&apos;s built with,
++        and the one problem that took longest to find.
++      </p>
++
++      {/* Single column, not the two-up grid the tools pages use. These cards
++          carry paragraphs; side by side they'd force a measure too narrow to
++          read comfortably. */}
++      <div className="mt-10 space-y-4">
++        {projects.map((project) => (
++          <ProjectCard key={project.slug} project={project} />
++        ))}
++      </div>
++    </div>
++  );
++}
+diff --git a/app/prompting-tools/page.tsx b/app/prompting-tools/page.tsx
+deleted file mode 100644
+index f7307f5..0000000
+--- a/app/prompting-tools/page.tsx
++++ /dev/null
+@@ -1,39 +0,0 @@
+-import ToolsIndex from "@/components/ToolsIndex";
+-import type { Tool } from "@/components/ToolCard";
+-
+-export const metadata = {
+-  title: "Prompting Tools",
+-  description: "Prompt templates, patterns, and utilities for working with LLMs.",
+-};
+-
+-const tools: Tool[] = [
+-  {
+-    name: "Prompt library",
+-    category: "Reference",
+-    description:
+-      "Reusable prompts by task — analysis, drafting, code review — with notes on what each one gets wrong.",
+-  },
+-  {
+-    name: "Token counter",
+-    category: "Utility",
+-    description:
+-      "Paste text, see token count and rough cost across common model pricing.",
+-  },
+-  {
+-    name: "Structured output builder",
+-    category: "Utility",
+-    description:
+-      "Compose a JSON schema and get a prompt that reliably returns it.",
+-  },
+-];
+-
+-export default function PromptingTools() {
+-  return (
+-    <ToolsIndex
+-      eyebrow="LLMs"
+-      title="Prompting Tools"
+-      intro="Templates, patterns, and small utilities for getting useful work out of language models — collected from actual use rather than theory."
+-      tools={tools}
+-    />
+-  );
+-}
+diff --git a/app/tools/page.tsx b/app/tools/page.tsx
+new file mode 100644
+index 0000000..af5b7b8
+--- /dev/null
++++ b/app/tools/page.tsx
+@@ -0,0 +1,100 @@
++import ToolsIndex, { type ToolGroup } from "@/components/ToolsIndex";
++
++export const metadata = {
++  title: "Tools",
++  description:
++    "Calculators, utilities and small models from finance, LLM and marketing work.",
++};
++
++// Merged from /finance-tools, /prompting-tools and /marketing-tools. Three
++// nav slots holding nine cards that all read "Planned" advertised absence
++// three times over; one page with three sections says the same thing once.
++// The old routes redirect here — see next.config.mjs.
++const groups: ToolGroup[] = [
++  {
++    label: "Finance",
++    blurb:
++      "Calculators and small models from finance and real estate work — the ones worth building once rather than rebuilding in a spreadsheet each time.",
++    tools: [
++      {
++        name: "Mortgage & amortisation",
++        category: "Calculator",
++        description:
++          "Repayment schedule with rate, term, and lump-sum overpayment inputs.",
++      },
++      {
++        name: "Property yield",
++        category: "Real estate",
++        description:
++          "Gross and net rental yield, with service charge and void assumptions.",
++      },
++      {
++        name: "DCF valuation",
++        category: "Model",
++        description:
++          "Discounted cash flow with adjustable WACC and terminal growth.",
++      },
++    ],
++  },
++  {
++    label: "LLMs",
++    blurb:
++      "Templates, patterns, and small utilities for getting useful work out of language models — collected from actual use rather than theory.",
++    tools: [
++      {
++        name: "Prompt library",
++        category: "Reference",
++        description:
++          "Reusable prompts by task — analysis, drafting, code review — with notes on what each one gets wrong.",
++      },
++      {
++        name: "Token counter",
++        category: "Utility",
++        description:
++          "Paste text, see token count and rough cost across common model pricing.",
++      },
++      {
++        name: "Structured output builder",
++        category: "Utility",
++        description:
++          "Compose a JSON schema and get a prompt that reliably returns it.",
++      },
++    ],
++  },
++  {
++    label: "Sales & Marketing",
++    blurb:
++      "Utilities from real estate sales and design work — the repetitive parts of running campaigns and producing collateral.",
++    tools: [
++      {
++        name: "Listing copy generator",
++        category: "Real estate",
++        description:
++          "Property details in, structured listing copy out — headline, body, and highlights.",
++      },
++      {
++        name: "UTM builder",
++        category: "Campaigns",
++        description:
++          "Consistent campaign URLs with a saved naming convention, so reporting stays clean.",
++      },
++      {
++        name: "Social post sizer",
++        category: "Design",
++        description:
++          "Current dimensions and safe areas per platform, for laying out artwork in Canva.",
++      },
++    ],
++  },
++];
++
++export default function Tools() {
++  return (
++    <ToolsIndex
++      eyebrow="Utilities"
++      title="Tools"
++      intro="Small things built to solve a problem more than once. Anything marked Planned isn't built yet — shipped tools appear on the Projects page too."
++      groups={groups}
++    />
++  );
++}
+diff --git a/components/ProjectCard.tsx b/components/ProjectCard.tsx
+new file mode 100644
+index 0000000..e1123a6
+--- /dev/null
++++ b/components/ProjectCard.tsx
+@@ -0,0 +1,110 @@
++import Link from "next/link";
++import type { Project, ProjectStatus } from "@/lib/projects";
++
++const STATUS_LABEL: Record<ProjectStatus, string> = {
++  live: "Live",
++  "in-progress": "In progress",
++  planned: "Planned",
++};
++
++// Live earns the accent. Everything else stays quiet — a promise shouldn't
++// draw the eye as hard as a thing that exists.
++const STATUS_CLASS: Record<ProjectStatus, string> = {
++  live: "text-accent",
++  "in-progress": "text-bone/60",
++  planned: "text-bone/40",
++};
++
++function Field({ label, children }: { label: string; children: React.ReactNode }) {
++  return (
++    <div>
++      <div className="meta">{label}</div>
++      <p className="mt-2 font-serif text-[15px] leading-relaxed text-bone/85">
++        {children}
++      </p>
++    </div>
++  );
++}
++
++export default function ProjectCard({ project }: { project: Project }) {
++  const { status, links } = project;
++
++  // Unlike ToolCard, the whole card is never a link: a project has several
++  // destinations (live site, repo, write-up) and picking one to own the
++  // click would bury the other two.
++  const isStub = !project.whatItIs;
++
++  return (
++    <article className={`card p-6 sm:p-7 ${isStub ? "opacity-70" : ""}`}>
++      <div className={`meta ${STATUS_CLASS[status]}`}>{STATUS_LABEL[status]}</div>
++
++      <h2 className="mt-3 font-sans text-xl font-medium tracking-tight text-bone">
++        {project.name}
++      </h2>
++
++      {project.tagline && (
++        <p className="mt-2 max-w-prose font-serif text-[15px] leading-relaxed text-bone/70">
++          {project.tagline}
++        </p>
++      )}
++
++      {!isStub && (
++        <div className="mt-6 grid gap-5 sm:grid-cols-2">
++          {project.whatItIs && <Field label="What it is">{project.whatItIs}</Field>}
++          {project.whoUsesIt && <Field label="Who uses it">{project.whoUsesIt}</Field>}
++        </div>
++      )}
++
++      {project.stack && project.stack.length > 0 && (
++        <div className="mt-6">
++          <div className="meta">Stack</div>
++          <ul className="mt-2 flex flex-wrap gap-2">
++            {project.stack.map((item) => (
++              <li key={item} className="tag-pill">
++                {item}
++              </li>
++            ))}
++          </ul>
++        </div>
++      )}
++
++      {project.hardThing && (
++        <div className="mt-6 border-l border-accent-faint pl-4">
++          <div className="meta">What was hard</div>
++          <p className="mt-2 max-w-prose font-serif text-[15px] leading-relaxed text-bone/85">
++            {project.hardThing.symptom}
++          </p>
++          <p className="mt-3 max-w-prose font-serif text-[15px] leading-relaxed text-bone/85">
++            {project.hardThing.rootCause}
++          </p>
++        </div>
++      )}
++
++      {links && links.length > 0 && (
++        <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 font-mono text-[11px] uppercase tracking-[0.14em]">
++          {links.map((link) =>
++            link.external ? (
++              <a
++                key={link.href}
++                href={link.href}
++                target="_blank"
++                rel="noreferrer"
++                className="text-accent hover:underline"
++              >
++                {link.label} <span aria-hidden="true">→</span>
++              </a>
++            ) : (
++              <Link
++                key={link.href}
++                href={link.href}
++                className="text-accent hover:underline"
++              >
++                {link.label} <span aria-hidden="true">→</span>
++              </Link>
++            )
++          )}
++        </div>
++      )}
++    </article>
++  );
++}
+diff --git a/components/ToolsIndex.tsx b/components/ToolsIndex.tsx
+index 6d01921..4b29c17 100644
+--- a/components/ToolsIndex.tsx
++++ b/components/ToolsIndex.tsx
+@@ -1,15 +1,25 @@
+ import ToolCard, { type Tool } from "@/components/ToolCard";
+ 
++export type ToolGroup = {
++  label: string;
++  /** Sits under the group heading. One line — not a second intro. */
++  blurb: string;
++  tools: Tool[];
++};
++
++// Takes groups rather than a flat list because the three tools pages were
++// merged into one route. The grouping is what carried the information those
++// three separate pages used to carry.
+ export default function ToolsIndex({
+   eyebrow,
+   title,
+   intro,
+-  tools,
++  groups,
+ }: {
+   eyebrow: string;
+   title: string;
+   intro: string;
+-  tools: Tool[];
++  groups: ToolGroup[];
+ }) {
+   return (
+     <div>
+@@ -21,9 +31,22 @@ export default function ToolsIndex({
+         {intro}
+       </p>
+ 
+-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+-        {tools.map((tool) => (
+-          <ToolCard key={tool.name} tool={tool} />
++      <div className="mt-12 space-y-12">
++        {groups.map((group) => (
++          <section key={group.label}>
++            <h2 className="font-sans text-2xl font-medium tracking-tight text-bone">
++              {group.label}
++            </h2>
++            <p className="mt-2 max-w-prose font-serif text-[15px] leading-relaxed text-bone/70">
++              {group.blurb}
++            </p>
++
++            <div className="mt-6 grid gap-4 sm:grid-cols-2">
++              {group.tools.map((tool) => (
++                <ToolCard key={tool.name} tool={tool} />
++              ))}
++            </div>
++          </section>
+         ))}
+       </div>
+     </div>
+diff --git a/lib/nav.ts b/lib/nav.ts
+index 0e2e9b8..76f1baf 100644
+--- a/lib/nav.ts
++++ b/lib/nav.ts
+@@ -1,6 +1,7 @@
++// Projects sits ahead of Tools deliberately: it's the page with things that
++// exist on it, and it's where a reader arriving from the CV should land first.
+ export const navLinks = [
+   { href: "/blog", label: "Blog" },
+-  { href: "/finance-tools", label: "Finance Tools" },
+-  { href: "/prompting-tools", label: "Prompting Tools" },
+-  { href: "/marketing-tools", label: "Marketing Tools" },
++  { href: "/projects", label: "Projects" },
++  { href: "/tools", label: "Tools" },
+ ];
+diff --git a/lib/projects.ts b/lib/projects.ts
+new file mode 100644
+index 0000000..51e3499
+--- /dev/null
++++ b/lib/projects.ts
+@@ -0,0 +1,96 @@
++export type ProjectStatus = "live" | "in-progress" | "planned";
++
++export type ProjectLink = {
++  label: string;
++  href: string;
++  /** Opens in a new tab. Omit for internal routes. */
++  external?: boolean;
++};
++
++/**
++ * The root cause is a required half of this pair on purpose.
++ *
++ * A project write-up that says "the layout was tricky" proves nothing. The
++ * value is in the specific thing that turned out to be wrong, so the type
++ * makes it impossible to describe a problem without naming its cause.
++ */
++export type HardThing = {
++  symptom: string;
++  rootCause: string;
++};
++
++export type Project = {
++  slug: string;
++  name: string;
++  status: ProjectStatus;
++  /** One line under the name. Omitted where there is deliberately no copy. */
++  tagline?: string;
++  whatItIs?: string;
++  whoUsesIt?: string;
++  stack?: string[];
++  hardThing?: HardThing;
++  links?: ProjectLink[];
++};
++
++// Order is deliberate: the live, revenue-carrying project first. A reader
++// arriving from the CV should hit the strongest evidence before the promises.
++export const projects: Project[] = [
++  {
++    slug: "umojah-sound-system",
++    name: "Umojah Sound System",
++    status: "live",
++    tagline:
++      "The booking front door for Kenya's first traditional reggae and dub sound system.",
++    whatItIs:
++      "A production site for a sound system hand-built in Nairobi. It carries the equipment hire business, the record label's mailing list, and the Nairobi Dub Club event archive.",
++    whoUsesIt:
++      "Promoters and venues booking the rig, clients commissioning custom sound system builds, and the audience checking event dates. Traffic is overwhelmingly mobile.",
++    stack: [
++      "Next.js 16 (App Router)",
++      "Tailwind CSS",
++      "Vercel",
++      "Resend",
++      "ImprovMX",
++      "Cookieless analytics",
++    ],
++    hardThing: {
++      symptom:
++        "The mailing list form reported success for every submission and added nobody. 200 OK in the logs, “You're on the list” on screen, no error anywhere, and an empty audience in Resend.",
++      rootCause:
++        "The spam honeypot tested whether the hidden field existed rather than whether it had a value. The form always sends it — empty, for a human — so every real submission was classified as a bot, returned OK, and never reached Resend at all. It was caught by an absence rather than an error: the route logs on failure, so a 200 with no log line meant the code never got that far.",
++    },
++    links: [
++      {
++        label: "Live site",
++        href: "https://umojahsoundsystem.com",
++        external: true,
++      },
++      {
++        label: "Repo",
++        href: "https://github.com/jsavla16/umojah-website",
++        external: true,
++      },
++      // Points at the blog index until the honeypot post is published, then
++      // becomes /blog/<slug>. Deliberately not a dead anchor in the meantime.
++      { label: "Build log", href: "/blog" },
++    ],
++  },
++  {
++    slug: "kenya-land-rag",
++    name: "Kenyan Land Law RAG",
++    status: "in-progress",
++    tagline:
++      "Retrieval over Kenya's land and property statutes, with every answer cited to section.",
++    // No body copy until the thing exists and has been evaluated. Numbers
++    // from a run that has actually happened, or nothing.
++  },
++  {
++    slug: "integral-structural-steel-search",
++    name: "Integral Structural Steel — search",
++    status: "planned",
++    // COPY WITHHELD ON PURPOSE. Client work, in progress, not to be written
++    // up. Do not fill this in without the client's agreement — the slot
++    // exists to hold the position in the list, not to be completed later by
++    // whoever next edits this file.
++  },
++];
+diff --git a/next.config.mjs b/next.config.mjs
+index d5456a1..49bbf2c 100644
+--- a/next.config.mjs
++++ b/next.config.mjs
+@@ -1,6 +1,17 @@
+ /** @type {import('next').NextConfig} */
+ const nextConfig = {
+   reactStrictMode: true,
++
++  // The three tools pages were merged into /tools. These are permanent (308)
++  // rather than temporary so search engines transfer rather than split — the
++  // old paths are gone for good, not parked.
++  async redirects() {
++    return [
++      { source: "/finance-tools", destination: "/tools", permanent: true },
++      { source: "/prompting-tools", destination: "/tools", permanent: true },
++      { source: "/marketing-tools", destination: "/tools", permanent: true },
++    ];
++  },
+ };
+ 
+ export default nextConfig;
