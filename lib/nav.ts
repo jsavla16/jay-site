@@ -1,6 +1,7 @@
+// Projects sits ahead of Tools deliberately: it's the page with things that
+// exist on it, and it's where a reader arriving from the CV should land first.
 export const navLinks = [
   { href: "/blog", label: "Blog" },
-  { href: "/finance-tools", label: "Finance Tools" },
-  { href: "/prompting-tools", label: "Prompting Tools" },
-  { href: "/marketing-tools", label: "Marketing Tools" },
+  { href: "/projects", label: "Projects" },
+  { href: "/tools", label: "Tools" },
 ];
