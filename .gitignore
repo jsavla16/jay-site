@@ -32,3 +32,6 @@ yarn-error.log*
 /wordmark examples/
 # (raw notes + reference components from the Umojah build, kept for blog drafting)
 /umojah-website-blog/
+
+# (kenya-land-rag planning docs - contains the clean-room audit, must never be committed)
+/planning/
