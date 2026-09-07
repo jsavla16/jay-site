@@ -36,6 +36,15 @@ export const posts: PostMeta[] = [
     readTime: "6 min",
     tags: ["Building Umojah", "Design"],
   },
+  {
+    slug: "the-mobile-mistake",
+    title: "The Mobile Mistake",
+    date: "2026-09-04",
+    excerpt:
+      "Body copy computed to 5.3px on a 390px phone, buttons a quarter of the size a thumb needs to tap comfortably. Not a rendering hiccup: the whole desktop composition, --stage and all, just crammed into a strip the width of a hand, and where an AI can size a layout but can't decide what belongs on it.",
+    readTime: "6 min",
+    tags: ["Building Umojah", "Mobile"],
+  },
 ];
 
 function isPublished(post: PostMeta, now: Date): boolean {
