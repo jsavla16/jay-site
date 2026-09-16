@@ -45,6 +45,15 @@ export const posts: PostMeta[] = [
     readTime: "6 min",
     tags: ["Building Umojah", "Mobile"],
   },
+  {
+    slug: "researching-before-ranking",
+    title: "Researching Before Ranking",
+    date: "2026-09-11",
+    excerpt:
+      "Ten minutes in an incognito browser and a competitor's link-farm footer taught me more about this market than any paid tool would have, and led to a pricing decision no SEO checklist would have recommended.",
+    readTime: "6 min",
+    tags: ["Building Umojah", "SEO"],
+  },
 ];
 
 function isPublished(post: PostMeta, now: Date): boolean {
